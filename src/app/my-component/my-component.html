@@ -1,0 +1,16 @@
+<input [(ngModel)]="id" placeholder="Entrez un ID" id="input1">
+<br>
+<input [value]="id" readonly id="input2">
+
+<br>
+<input [(ngModel)]="search" placeholder="Filtrer les Pokémon par nom">
+
+<select [(ngModel)]="selectedPokemonId">
+  <option *ngFor="let p of pokemons | filterPokemonPipe:'nom':search" [value]="p.id">
+    {{ p.nom }}
+  </option>
+</select>
+
+<p>Pokémon sélectionné : {{ selectedPokemonId }}</p>
+
+<button (click)="validerChoix()">Go !</button>
