@@ -1,31 +1,35 @@
 import { Component } from '@angular/core';
-import { Pokemon } from '../pokemon';
-
+import { PokeDetail, Pokemon } from '../pokemon';
+import { OnInit } from '@angular/core';
+import { Pokedex } from '../pokedex';
+import { PokeShareInfo } from '../poke-share-info';
 @Component({
   selector: 'app-my-component',
   standalone: false,
   templateUrl: './my-component.html',
-  styleUrl: './my-component.css'
+  styleUrl: './my-component.css',
+  providers: [Pokedex]
 })
-export class MyComponent {
+export class MyComponent implements OnInit {
   id: string = '';
-  selectedPokemonId: number = 1; // Valeur par défaut
+  selectedPokemonId: string = '';
   search: string = '';
+  pokemons: Pokemon[] = [];
+  pokeDetail: PokeDetail | undefined ;
+  constructor(private pokedex: Pokedex, private pokeShareInfo: PokeShareInfo) {}
 
-  pokemons: Pokemon[] = [
-    new Pokemon(1, 'Bulbizarre'),
-    new Pokemon(2, 'Salamèche'),
-    new Pokemon(3, 'Carapuce'),
-    new Pokemon(4, 'Pikachu')
-  ];
-
-  validerChoix() {
-  const pokemon = this.pokemons.find(p => p.id === Number(this.selectedPokemonId));
-  if (pokemon) {
-    console.log(`ID : ${pokemon.id}, Nom : ${pokemon.nom}`);
-  } else {
-    console.log('Aucun Pokémon sélectionné');
+  ngOnInit(): void {
+    this.pokedex.getPokemons().subscribe(data => {
+      data.results.forEach((e: any, index: number) => {
+        this.pokemons.push(new Pokemon(index, e.name, e.url));
+      });
+    });
   }
-}
 
+  go(){
+    if(this.selectedPokemonId != '') {
+      this.pokedex.getPokemonDetails(this.selectedPokemonId.toString()).subscribe(data => this.pokeDetail = data);
+      this.pokeShareInfo.setValue(this.selectedPokemonId);
+    }
+  } 
 };

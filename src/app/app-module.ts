@@ -9,14 +9,17 @@ import { FormsModule } from '@angular/forms';
 import { FilterPokemonPipePipe } from './filter-pokemon--pipe-pipe';
 import { Pokedex } from './pokedex';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Pokedetail } from './pokedetail/pokedetail';
+
 
 
 @NgModule({
   declarations: [
     App,
-    MyComponent,
     IdInput,
-    FilterPokemonPipePipe
+    MyComponent,
+    FilterPokemonPipePipe,
+    Pokedetail
   ],
   imports: [
     FormsModule,

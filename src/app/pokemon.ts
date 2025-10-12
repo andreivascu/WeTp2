@@ -1,53 +1,216 @@
-export class Pokemon {
-  id: number;
-  nom: string;
+export interface PokeDexServiceRes {
+    count: number;
+    next: string;
+    previous: null;
+    results: IPokemon[];
+}
+export interface IPokemon {
+    name: string;
+    url: string;
+}
+// To parse this data:
+//
+//   import { Convert, PokeDetail } from "./file";
+//
+//   const pokeDetail = Convert.toPokeDetail(json);
+//
+// These functions will throw an error if the JSON doesn't
+// match the expected interface, even if the JSON is valid.
 
-  constructor(id: number, nom: string) {
-    this.id = id;
-    this.nom = nom;
-  }
-
+export interface PokeDetail {
+    abilities:                Ability[];
+    base_experience:          number;
+    cries:                    Cries;
+    forms:                    Species[];
+    game_indices:             GameIndex[];
+    height:                   number;
+    held_items:               any[];
+    id:                       number;
+    is_default:               boolean;
+    location_area_encounters: string;
+    moves:                    Move[];
+    name:                     string;
+    order:                    number;
+    past_abilities:           PastAbility[];
+    past_types:               any[];
+    species:                  Species;
+    sprites:                  Sprites;
+    stats:                    Stat[];
+    types:                    Type[];
+    weight:                   number;
 }
 
-export interface Welcome {
-    descriptions:    Description[];
-    id:              number;
-    is_main_series:  boolean;
-    name:            string;
-    names:           Name[];
-    pokemon_entries: PokemonEntry[];
-    region:          null;
-    version_groups:  any[];
-}
-export interface Description {
-    description: string;
-    language:    Language;
+export interface Ability {
+    ability:   Species | null;
+    is_hidden: boolean;
+    slot:      number;
 }
 
-export interface Language {
+export interface Species {
     name: string;
     url:  string;
 }
 
-export interface Name {
-    language: Language;
-    name:     string;
+export interface Cries {
+    latest: string;
+    legacy: string;
 }
 
-export interface PokemonEntry {
-    entry_number:    number;
-    pokemon_species: Language;
+export interface GameIndex {
+    game_index: number;
+    version:    Species;
+}
+
+export interface Move {
+    move:                  Species;
+    version_group_details: VersionGroupDetail[];
+}
+
+export interface VersionGroupDetail {
+    level_learned_at:  number;
+    move_learn_method: Species;
+    order:             number | null;
+    version_group:     Species;
+}
+
+export interface PastAbility {
+    abilities:  Ability[];
+    generation: Species;
+}
+
+export interface GenerationV {
+    "black-white": Sprites;
+}
+
+export interface GenerationIv {
+    "diamond-pearl":        Sprites;
+    "heartgold-soulsilver": Sprites;
+    platinum:               Sprites;
+}
+
+export interface Versions {
+    "generation-i":    GenerationI;
+    "generation-ii":   GenerationIi;
+    "generation-iii":  GenerationIii;
+    "generation-iv":   GenerationIv;
+    "generation-v":    GenerationV;
+    "generation-vi":   { [key: string]: Home };
+    "generation-vii":  GenerationVii;
+    "generation-viii": GenerationViii;
+}
+
+export interface Other {
+    dream_world:        DreamWorld;
+    home:               Home;
+    "official-artwork": OfficialArtwork;
+    showdown:           Sprites;
+}
+
+export interface Sprites {
+    back_default:       string;
+    back_female:        null;
+    back_shiny:         string;
+    back_shiny_female:  null;
+    front_default:      string;
+    front_female:       null;
+    front_shiny:        string;
+    front_shiny_female: null;
+    other?:             Other;
+    versions?:          Versions;
+    animated?:          Sprites;
+}
+
+export interface GenerationI {
+    "red-blue": RedBlue;
+    yellow:     RedBlue;
+}
+
+export interface RedBlue {
+    back_default:      string;
+    back_gray:         string;
+    back_transparent:  string;
+    front_default:     string;
+    front_gray:        string;
+    front_transparent: string;
+}
+
+export interface GenerationIi {
+    crystal: Crystal;
+    gold:    Gold;
+    silver:  Gold;
+}
+
+export interface Crystal {
+    back_default:            string;
+    back_shiny:              string;
+    back_shiny_transparent:  string;
+    back_transparent:        string;
+    front_default:           string;
+    front_shiny:             string;
+    front_shiny_transparent: string;
+    front_transparent:       string;
+}
+
+export interface Gold {
+    back_default:       string;
+    back_shiny:         string;
+    front_default:      string;
+    front_shiny:        string;
+    front_transparent?: string;
+}
+
+export interface GenerationIii {
+    emerald:             OfficialArtwork;
+    "firered-leafgreen": Gold;
+    "ruby-sapphire":     Gold;
+}
+
+export interface OfficialArtwork {
+    front_default: string;
+    front_shiny:   string;
+}
+
+export interface Home {
+    front_default:      string;
+    front_female:       null;
+    front_shiny:        string;
+    front_shiny_female: null;
+}
+
+export interface GenerationVii {
+    icons:                  DreamWorld;
+    "ultra-sun-ultra-moon": Home;
+}
+
+export interface DreamWorld {
+    front_default: string;
+    front_female:  null;
+}
+
+export interface GenerationViii {
+    icons: DreamWorld;
+}
+
+export interface Stat {
+    base_stat: number;
+    effort:    number;
+    stat:      Species;
+}
+
+export interface Type {
+    slot: number;
+    type: Species;
 }
 
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
 export class Convert {
-    public static toWelcome(json: string): Welcome {
-        return cast(JSON.parse(json), r("Welcome"));
+    public static toPokeDetail(json: string): PokeDetail {
+        return cast(JSON.parse(json), r("PokeDetail"));
     }
 
-    public static welcomeToJson(value: Welcome): string {
-        return JSON.stringify(uncast(value, r("Welcome")), null, 2);
+    public static pokeDetailToJson(value: PokeDetail): string {
+        return JSON.stringify(uncast(value, r("PokeDetail")), null, 2);
     }
 }
 
@@ -204,30 +367,176 @@ function r(name: string) {
 }
 
 const typeMap: any = {
-    "Welcome": o([
-        { json: "descriptions", js: "descriptions", typ: a(r("Description")) },
+    "PokeDetail": o([
+        { json: "abilities", js: "abilities", typ: a(r("Ability")) },
+        { json: "base_experience", js: "base_experience", typ: 0 },
+        { json: "cries", js: "cries", typ: r("Cries") },
+        { json: "forms", js: "forms", typ: a(r("Species")) },
+        { json: "game_indices", js: "game_indices", typ: a(r("GameIndex")) },
+        { json: "height", js: "height", typ: 0 },
+        { json: "held_items", js: "held_items", typ: a("any") },
         { json: "id", js: "id", typ: 0 },
-        { json: "is_main_series", js: "is_main_series", typ: true },
+        { json: "is_default", js: "is_default", typ: true },
+        { json: "location_area_encounters", js: "location_area_encounters", typ: "" },
+        { json: "moves", js: "moves", typ: a(r("Move")) },
         { json: "name", js: "name", typ: "" },
-        { json: "names", js: "names", typ: a(r("Name")) },
-        { json: "pokemon_entries", js: "pokemon_entries", typ: a(r("PokemonEntry")) },
-        { json: "region", js: "region", typ: null },
-        { json: "version_groups", js: "version_groups", typ: a("any") },
+        { json: "order", js: "order", typ: 0 },
+        { json: "past_abilities", js: "past_abilities", typ: a(r("PastAbility")) },
+        { json: "past_types", js: "past_types", typ: a("any") },
+        { json: "species", js: "species", typ: r("Species") },
+        { json: "sprites", js: "sprites", typ: r("Sprites") },
+        { json: "stats", js: "stats", typ: a(r("Stat")) },
+        { json: "types", js: "types", typ: a(r("Type")) },
+        { json: "weight", js: "weight", typ: 0 },
     ], false),
-    "Description": o([
-        { json: "description", js: "description", typ: "" },
-        { json: "language", js: "language", typ: r("Language") },
+    "Ability": o([
+        { json: "ability", js: "ability", typ: u(r("Species"), null) },
+        { json: "is_hidden", js: "is_hidden", typ: true },
+        { json: "slot", js: "slot", typ: 0 },
     ], false),
-    "Language": o([
+    "Species": o([
         { json: "name", js: "name", typ: "" },
         { json: "url", js: "url", typ: "" },
     ], false),
-    "Name": o([
-        { json: "language", js: "language", typ: r("Language") },
-        { json: "name", js: "name", typ: "" },
+    "Cries": o([
+        { json: "latest", js: "latest", typ: "" },
+        { json: "legacy", js: "legacy", typ: "" },
     ], false),
-    "PokemonEntry": o([
-        { json: "entry_number", js: "entry_number", typ: 0 },
-        { json: "pokemon_species", js: "pokemon_species", typ: r("Language") },
+    "GameIndex": o([
+        { json: "game_index", js: "game_index", typ: 0 },
+        { json: "version", js: "version", typ: r("Species") },
+    ], false),
+    "Move": o([
+        { json: "move", js: "move", typ: r("Species") },
+        { json: "version_group_details", js: "version_group_details", typ: a(r("VersionGroupDetail")) },
+    ], false),
+    "VersionGroupDetail": o([
+        { json: "level_learned_at", js: "level_learned_at", typ: 0 },
+        { json: "move_learn_method", js: "move_learn_method", typ: r("Species") },
+        { json: "order", js: "order", typ: u(0, null) },
+        { json: "version_group", js: "version_group", typ: r("Species") },
+    ], false),
+    "PastAbility": o([
+        { json: "abilities", js: "abilities", typ: a(r("Ability")) },
+        { json: "generation", js: "generation", typ: r("Species") },
+    ], false),
+    "GenerationV": o([
+        { json: "black-white", js: "black-white", typ: r("Sprites") },
+    ], false),
+    "GenerationIv": o([
+        { json: "diamond-pearl", js: "diamond-pearl", typ: r("Sprites") },
+        { json: "heartgold-soulsilver", js: "heartgold-soulsilver", typ: r("Sprites") },
+        { json: "platinum", js: "platinum", typ: r("Sprites") },
+    ], false),
+    "Versions": o([
+        { json: "generation-i", js: "generation-i", typ: r("GenerationI") },
+        { json: "generation-ii", js: "generation-ii", typ: r("GenerationIi") },
+        { json: "generation-iii", js: "generation-iii", typ: r("GenerationIii") },
+        { json: "generation-iv", js: "generation-iv", typ: r("GenerationIv") },
+        { json: "generation-v", js: "generation-v", typ: r("GenerationV") },
+        { json: "generation-vi", js: "generation-vi", typ: m(r("Home")) },
+        { json: "generation-vii", js: "generation-vii", typ: r("GenerationVii") },
+        { json: "generation-viii", js: "generation-viii", typ: r("GenerationViii") },
+    ], false),
+    "Other": o([
+        { json: "dream_world", js: "dream_world", typ: r("DreamWorld") },
+        { json: "home", js: "home", typ: r("Home") },
+        { json: "official-artwork", js: "official-artwork", typ: r("OfficialArtwork") },
+        { json: "showdown", js: "showdown", typ: r("Sprites") },
+    ], false),
+    "Sprites": o([
+        { json: "back_default", js: "back_default", typ: "" },
+        { json: "back_female", js: "back_female", typ: null },
+        { json: "back_shiny", js: "back_shiny", typ: "" },
+        { json: "back_shiny_female", js: "back_shiny_female", typ: null },
+        { json: "front_default", js: "front_default", typ: "" },
+        { json: "front_female", js: "front_female", typ: null },
+        { json: "front_shiny", js: "front_shiny", typ: "" },
+        { json: "front_shiny_female", js: "front_shiny_female", typ: null },
+        { json: "other", js: "other", typ: u(undefined, r("Other")) },
+        { json: "versions", js: "versions", typ: u(undefined, r("Versions")) },
+        { json: "animated", js: "animated", typ: u(undefined, r("Sprites")) },
+    ], false),
+    "GenerationI": o([
+        { json: "red-blue", js: "red-blue", typ: r("RedBlue") },
+        { json: "yellow", js: "yellow", typ: r("RedBlue") },
+    ], false),
+    "RedBlue": o([
+        { json: "back_default", js: "back_default", typ: "" },
+        { json: "back_gray", js: "back_gray", typ: "" },
+        { json: "back_transparent", js: "back_transparent", typ: "" },
+        { json: "front_default", js: "front_default", typ: "" },
+        { json: "front_gray", js: "front_gray", typ: "" },
+        { json: "front_transparent", js: "front_transparent", typ: "" },
+    ], false),
+    "GenerationIi": o([
+        { json: "crystal", js: "crystal", typ: r("Crystal") },
+        { json: "gold", js: "gold", typ: r("Gold") },
+        { json: "silver", js: "silver", typ: r("Gold") },
+    ], false),
+    "Crystal": o([
+        { json: "back_default", js: "back_default", typ: "" },
+        { json: "back_shiny", js: "back_shiny", typ: "" },
+        { json: "back_shiny_transparent", js: "back_shiny_transparent", typ: "" },
+        { json: "back_transparent", js: "back_transparent", typ: "" },
+        { json: "front_default", js: "front_default", typ: "" },
+        { json: "front_shiny", js: "front_shiny", typ: "" },
+        { json: "front_shiny_transparent", js: "front_shiny_transparent", typ: "" },
+        { json: "front_transparent", js: "front_transparent", typ: "" },
+    ], false),
+    "Gold": o([
+        { json: "back_default", js: "back_default", typ: "" },
+        { json: "back_shiny", js: "back_shiny", typ: "" },
+        { json: "front_default", js: "front_default", typ: "" },
+        { json: "front_shiny", js: "front_shiny", typ: "" },
+        { json: "front_transparent", js: "front_transparent", typ: u(undefined, "") },
+    ], false),
+    "GenerationIii": o([
+        { json: "emerald", js: "emerald", typ: r("OfficialArtwork") },
+        { json: "firered-leafgreen", js: "firered-leafgreen", typ: r("Gold") },
+        { json: "ruby-sapphire", js: "ruby-sapphire", typ: r("Gold") },
+    ], false),
+    "OfficialArtwork": o([
+        { json: "front_default", js: "front_default", typ: "" },
+        { json: "front_shiny", js: "front_shiny", typ: "" },
+    ], false),
+    "Home": o([
+        { json: "front_default", js: "front_default", typ: "" },
+        { json: "front_female", js: "front_female", typ: null },
+        { json: "front_shiny", js: "front_shiny", typ: "" },
+        { json: "front_shiny_female", js: "front_shiny_female", typ: null },
+    ], false),
+    "GenerationVii": o([
+        { json: "icons", js: "icons", typ: r("DreamWorld") },
+        { json: "ultra-sun-ultra-moon", js: "ultra-sun-ultra-moon", typ: r("Home") },
+    ], false),
+    "DreamWorld": o([
+        { json: "front_default", js: "front_default", typ: "" },
+        { json: "front_female", js: "front_female", typ: null },
+    ], false),
+    "GenerationViii": o([
+        { json: "icons", js: "icons", typ: r("DreamWorld") },
+    ], false),
+    "Stat": o([
+        { json: "base_stat", js: "base_stat", typ: 0 },
+        { json: "effort", js: "effort", typ: 0 },
+        { json: "stat", js: "stat", typ: r("Species") },
+    ], false),
+    "Type": o([
+        { json: "slot", js: "slot", typ: 0 },
+        { json: "type", js: "type", typ: r("Species") },
     ], false),
 };
+
+
+export class Pokemon {
+  id: number;
+  nom: string;
+
+  constructor(id: number, nom: string, public url: string) {
+    this.id = id;
+    this.nom = nom;
+  }
+
+}
+

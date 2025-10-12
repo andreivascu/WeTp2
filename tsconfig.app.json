@@ -8,7 +8,7 @@
   },
   "include": [
     "src/**/*.ts"
-  ],
+, "src/app/pokedex.service"  ],
   "exclude": [
     "src/**/*.spec.ts"
   ]

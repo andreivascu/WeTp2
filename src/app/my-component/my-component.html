@@ -1,7 +1,10 @@
 <input [(ngModel)]="id" placeholder="Entrez un ID" id="input1">
 <br>
 <input [value]="id" readonly id="input2">
-
+<br>
+Mon id est : {{ id }}
+<br>
+<p>Pokémon sélectionné : {{ selectedPokemonId }}</p>
 <br>
 <input [(ngModel)]="search" placeholder="Filtrer les Pokémon par nom">
 
@@ -10,7 +13,13 @@
     {{ p.nom }}
   </option>
 </select>
+<button (click)="go()">Go</button>
+<br>
+<div *ngIf="pokeDetail">
 
-<p>Pokémon sélectionné : {{ selectedPokemonId }}</p>
+  <app-pokedetail [detail]="pokeDetail"></app-pokedetail>
+  
+  
+</div>
 
-<button (click)="validerChoix()">Go !</button>
+
