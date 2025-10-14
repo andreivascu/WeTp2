@@ -15,21 +15,23 @@ export class MyComponent implements OnInit {
   selectedPokemonId: string = '';
   search: string = '';
   pokemons: Pokemon[] = [];
-  pokeDetail: PokeDetail | undefined ;
-  constructor(private pokedex: Pokedex, private pokeShareInfo: PokeShareInfo) {}
+  pokeDetail: PokeDetail | undefined;
+  constructor(private pokedex: Pokedex, private pokeShareInfo: PokeShareInfo) { }
 
   ngOnInit(): void {
     this.pokedex.getPokemons().subscribe(data => {
-      data.results.forEach((e: any, index: number) => {
-        this.pokemons.push(new Pokemon(index, e.name, e.url));
+      data.results.forEach((e: any) => {
+        // Extraire l'id depuis l'URL
+        const id = Number(e.url.split('/').filter(Boolean).pop());
+        this.pokemons.push(new Pokemon(id, e.name, e.url));
       });
     });
   }
 
-  go(){
-    if(this.selectedPokemonId != '') {
+  go() {
+    if (this.selectedPokemonId != '') {
       this.pokedex.getPokemonDetails(this.selectedPokemonId.toString()).subscribe(data => this.pokeDetail = data);
       this.pokeShareInfo.setValue(this.selectedPokemonId);
     }
-  } 
+  }
 };
