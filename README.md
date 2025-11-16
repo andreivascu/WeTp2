@@ -112,6 +112,53 @@ Accédez à l’application sur [http://localhost:4200/](http://localhost:4200/)
 - Méthode `setValue()` pour publier un nouvel id ou nom.
 - Méthode `getObservable()` pour souscrire aux changements et mettre à jour l’affichage en temps réel.
 
+### 8. Intégration d’un composant open source (PrimeNG)
+
+PrimeNG et son thème officiel (Aura) sont installés via npm :
+npm install primeng @primeuix/themes
+
+Une fois la librairie installée, plusieurs providers doivent être ajoutés à l’application pour activer le thème et les animations :
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeuix/themes/aura';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+
+Puis dans providers :
+provideAnimationsAsync(),
+providePrimeNG({
+  theme: {
+    preset: Aura
+  }
+})
+
+Import du module Button
+import { ButtonModule } from 'primeng/button';
+
+Enregistrement du module dans la liste des imports du module Angular :
+imports: [
+  ...
+  ButtonModule
+]
+
+Composant de démonstration : PrimeButtonDemo
+Ce composant sert uniquement à valider l’intégration de PrimeNG.
+Il n’a pas de logique métier, mais il montre que la librairie est bien installée et fonctionnelle.
+
+import { Component } from '@angular/core';
+@Component({
+  selector: 'prime-button-demo',
+  standalone: false,
+  templateUrl: './prime-button-demo.html',
+  styleUrl: './prime-button-demo.css'
+}) 
+export class PrimeButtonDemo {}
+
+
+Contenu HTML associé :
+<p-button label="Check" icon="pi pi-check"></p-button>
+
+Le composant est ajouté dans app.html pour être visible à l’écran :
+<prime-button-demo></prime-button-demo>
+
 ---
 
 ## Sécurité
@@ -133,10 +180,12 @@ Les valeurs insérées dans le DOM via `{{ }}` ou `[property]` sont automatiquem
 
 ## Pour aller plus loin
 
-- Intégration de composants Material UI pour améliorer l’ergonomie.
-- Ajout de tests unitaires pour les services et composants.
-- Pagination ou lazy loading pour la liste des Pokémon.
-- Affichage des images et des types de Pokémon.
+Affichage Pokémon : 
+  Composant PokeCard : affiche le nom et l’image du Pokémon sélectionné.
+  S’affiche uniquement quand un Pokémon est choisi (*ngIf="pokeDetail").
+  Utilise PrimeNG p-card pour le style.
+  Intégré dans MyComponent avec :
+<poke-card [selectedPokemonId]="pokeDetail.id" [pokemonName]="pokeDetail.name"></poke-card>
 
 ---
 

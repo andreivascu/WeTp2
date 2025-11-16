@@ -3,6 +3,7 @@ import { PokeDetail, Pokemon } from '../pokemon';
 import { OnInit } from '@angular/core';
 import { Pokedex } from '../pokedex';
 import { PokeShareInfo } from '../poke-share-info';
+
 @Component({
   selector: 'app-my-component',
   standalone: false,

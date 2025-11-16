@@ -1,25 +1,39 @@
+<!-- Inputs pour l'ID -->
 <input [(ngModel)]="id" placeholder="Entrez un ID" id="input1">
 <br>
 <input [value]="id" readonly id="input2">
 <br>
 Mon id est : {{ id }}
 <br>
+
+<!-- Pokémon sélectionné -->
 <p>Pokémon sélectionné : {{ selectedPokemonId }}</p>
 <br>
+
+<!-- Input pour filtrer les Pokémon par nom -->
 <input [(ngModel)]="search" placeholder="Filtrer les Pokémon par nom">
 
+<!-- Sélecteur de Pokémon -->
 <select [(ngModel)]="selectedPokemonId">
   <option *ngFor="let p of pokemons | filterPokemonPipe:'nom':search" [value]="p.id">
     {{ p.nom }}
   </option>
 </select>
+
+<!-- Bouton Go -->
 <button (click)="go()">Go</button>
 <br>
+
+<!-- Détail et carte du Pokémon sélectionné -->
 <div *ngIf="pokeDetail">
 
+  <!-- Composant affichant les détails -->
   <app-pokedetail [detail]="pokeDetail"></app-pokedetail>
-  
+
+  <!-- Carte PrimeNG du Pokémon -->
+  <poke-card 
+      [selectedPokemonId]="pokeDetail.id" 
+      [pokemonName]="pokeDetail.name">
+  </poke-card>
   
 </div>
-
-

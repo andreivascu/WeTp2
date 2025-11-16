@@ -11,6 +11,16 @@ import { Pokedex } from './pokedex';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Pokedetail } from './pokedetail/pokedetail';
 
+// Ajout PrimeNG et animations
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeuix/themes/aura';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { PrimeButtonDemo } from './prime-button-demo';
+import { ButtonModule } from 'primeng/button';
+import { PokeCard } from './poke-card';
+import { CardModule } from 'primeng/card';
+
+
 
 
 @NgModule({
@@ -19,18 +29,28 @@ import { Pokedetail } from './pokedetail/pokedetail';
     IdInput,
     MyComponent,
     FilterPokemonPipePipe,
-    Pokedetail
+    Pokedetail,
+    PrimeButtonDemo,
+    PokeCard
   ],
   imports: [
     FormsModule,
     BrowserModule,
     AppRoutingModule, 
-    HttpClientModule
+    HttpClientModule,
+    ButtonModule,
+    CardModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
-    Pokedex
+    Pokedex,
+    provideAnimationsAsync(),
+    providePrimeNG({
+      theme: {
+        preset:Aura
+      }
+    })
   ],
   bootstrap: [App]
 })

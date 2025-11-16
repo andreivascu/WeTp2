@@ -1,0 +1,9 @@
+<p-card *ngIf="selectedPokemonId"
+        [header]="pokemonName"
+        [subheader]="'Pokémon #' + selectedPokemonId"
+        [style]="{ width: '200px', margin: 'auto' }">
+  <img [src]="'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + selectedPokemonId + '.png'"
+       [alt]="pokemonName"
+       width="150"
+       [style]="{ display: 'block', margin: 'auto', 'image-rendering': 'pixelated' }" />
+</p-card>
