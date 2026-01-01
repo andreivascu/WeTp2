@@ -200,22 +200,13 @@ Mais honnêtement, rien que du classique à résoudre en expérimentant.
 
 ---
 
-## Prochaines Étapes (Si tu Veux Aller Plus Loin)
-
-- **Augmenter la couverture à 60%+** en testant les cas d'erreur (quand l'API ne répond pas)
-- **Tester les navigations** au sein de l'app
-- **CI/CD** - GitHub Actions pour que les tests tournent automatiquement
-- **Accessibilité** - vérifier que tout fonctionne au clavier sans souris
-
----
-
 ## En Résumé
 
 PokeDemo a maintenant une **suite de tests solide** qui couvre les cas importants. Les tests tournent vite, sont fiables, et on peut refactoriser en toute confiance.
 
 La couverture n'est pas parfaite (45.56%) mais elle couvre les endroits critiques : les services, les pipes, et les composants principaux.
 
-Et surtout, les tests **passent tous** - c'est le plus important ! ✅
+Et surtout, les tests **passent tous** - c'est le plus important ! 
 
 ---
 
@@ -231,8 +222,3 @@ npm run start             # Démarre l'app
 npm run build             # Build pour prod
 ```
 
----
-
-**C'est quoi le truc le plus satisfaisant ?** Voir tous les tests passer en vert. 🟢
-
-Fait le 23 décembre 2025.
